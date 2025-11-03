@@ -1,0 +1,86 @@
+{
+  "// COMMENT": "This is an example configuration for Claude Code WSL Audio Hooks",
+  "// USAGE": "Copy the 'hooks' section below into your ~/.claude/settings.json or <project>/.claude/settings.local.json",
+
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -ExecutionPolicy Bypass -File ~/.claude/play-mp3.ps1 'sounds\\requestSent.mp3' 2>/dev/null || true",
+            "// DESCRIPTION": "Plays sound BEFORE Claude edits/writes files"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -ExecutionPolicy Bypass -File ~/.claude/play-mp3.ps1 'sounds\\responseReceived.mp3' 2>/dev/null || true",
+            "// DESCRIPTION": "Plays sound when you SUBMIT a prompt to Claude"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -ExecutionPolicy Bypass -File ~/.claude/play-mp3.ps1 'sounds\\done.mp3' 2>/dev/null || true",
+            "// DESCRIPTION": "Plays sound when Claude STOPS processing"
+          }
+        ]
+      }
+    ],
+    "// OPTIONAL_PostToolUse": "Add this section if you want sounds AFTER tool execution",
+    "PostToolUse_OPTIONAL": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell.exe -ExecutionPolicy Bypass -File ~/.claude/play-mp3.ps1 'sounds\\command-complete.mp3' 2>/dev/null || true",
+            "// DESCRIPTION": "Plays sound after Bash commands complete"
+          }
+        ]
+      }
+    ]
+  },
+
+  "// CUSTOMIZATION_NOTES": [
+    "1. Replace sound filenames to use your own audio files",
+    "2. Add more hook events: PostToolUse, PreToolUse with different matchers",
+    "3. Use Windows-style backslashes (\\) in file paths",
+    "4. The '2>/dev/null || true' ensures hooks don't block Claude if audio fails",
+    "5. Place audio files in ~/.claude/sounds/ directory"
+  ],
+
+  "// PATH_NOTES": [
+    "- Use absolute path: /home/username/.claude/play-mp3.ps1",
+    "- Or use tilde: ~/.claude/play-mp3.ps1",
+    "- Audio paths are relative to play-mp3.ps1 location",
+    "- Always use backslashes (\\) for Windows paths in the sound files"
+  ],
+
+  "// AVAILABLE_HOOKS": [
+    "PreToolUse - Before tool execution",
+    "PostToolUse - After tool execution",
+    "UserPromptSubmit - When user sends a message",
+    "Stop - When Claude stops processing",
+    "Error - When an error occurs (experimental)"
+  ],
+
+  "// MATCHER_EXAMPLES": [
+    "Edit - Matches Edit tool only",
+    "Write - Matches Write tool only",
+    "Edit|Write|MultiEdit - Matches any of these tools",
+    "Bash - Matches Bash commands",
+    "Read - Matches file reads",
+    "* - Matches all tools (use carefully)"
+  ]
+}
