@@ -67,23 +67,14 @@ WSL2 doesn't have native audio support, which means you miss out on helpful noti
 
 ### Installation
 
-1. **Clone this repository to your Claude config directory:**
+1. **Clone this repository to your Claude audio-hooks directory:**
    ```bash
-   git clone https://github.com/junyjeon/claude-code-wsl-audio-hooks.git ~/.claude
+   git clone https://github.com/junyjeon/claude-code-wsl-audio-hooks.git ~/.claude/audio-hooks
    ```
 
-2. **Or manually copy files if you already have a `.claude` directory:**
-   ```bash
-   # Copy the essential files
-   cp play-mp3.ps1 ~/.claude/
-   cp -r sounds/ ~/.claude/
-   ```
+2. **Add hook configuration to your settings:**
 
-3. **Merge the hook configuration into your settings:**
-
-   Edit `~/.claude/settings.json` or create `~/.claude/settings.local.json` for project-specific config.
-
-   See [example-settings.json](example-settings.json) for the complete configuration.
+   Edit `~/.claude/settings.json` and add the following hooks:
 
    ```json
    {
@@ -94,7 +85,7 @@ WSL2 doesn't have native audio support, which means you miss out on helpful noti
            "hooks": [
              {
                "type": "command",
-               "command": "powershell.exe -ExecutionPolicy Bypass -File ~/.claude/play-mp3.ps1 'sounds\\requestSent.mp3' 2>/dev/null || true"
+               "command": "powershell.exe -ExecutionPolicy Bypass -File ~/.claude/audio-hooks/play-mp3.ps1 'sounds\\requestSent.mp3' 2>/dev/null || true"
              }
            ]
          }
@@ -104,7 +95,7 @@ WSL2 doesn't have native audio support, which means you miss out on helpful noti
            "hooks": [
              {
                "type": "command",
-               "command": "powershell.exe -ExecutionPolicy Bypass -File ~/.claude/play-mp3.ps1 'sounds\\responseReceived.mp3' 2>/dev/null || true"
+               "command": "powershell.exe -ExecutionPolicy Bypass -File ~/.claude/audio-hooks/play-mp3.ps1 'sounds\\responseReceived.mp3' 2>/dev/null || true"
              }
            ]
          }
@@ -114,7 +105,7 @@ WSL2 doesn't have native audio support, which means you miss out on helpful noti
            "hooks": [
              {
                "type": "command",
-               "command": "powershell.exe -ExecutionPolicy Bypass -File ~/.claude/play-mp3.ps1 'sounds\\done.mp3' 2>/dev/null || true"
+               "command": "powershell.exe -ExecutionPolicy Bypass -File ~/.claude/audio-hooks/play-mp3.ps1 'sounds\\done.mp3' 2>/dev/null || true"
              }
            ]
          }
@@ -141,10 +132,10 @@ WSL2 doesn't have native audio support, which means you miss out on helpful noti
 
 ### Using Your Own Sounds
 
-1. Place your audio files (MP3, WAV) in the `~/.claude/sounds/` directory
+1. Place your audio files (MP3, WAV) in the `~/.claude/audio-hooks/sounds/` directory
 2. Update the hook commands in `settings.json` with your filenames:
    ```json
-   "command": "powershell.exe -ExecutionPolicy Bypass -File ~/.claude/play-mp3.ps1 'sounds\\your-sound.mp3' 2>/dev/null || true"
+   "command": "powershell.exe -ExecutionPolicy Bypass -File ~/.claude/audio-hooks/play-mp3.ps1 'sounds\\your-sound.mp3' 2>/dev/null || true"
    ```
 
 ### Where to Find Sounds
@@ -166,7 +157,7 @@ The PowerShell script (`play-mp3.ps1`) supports relative paths from the script l
 
 ```powershell
 # Organize sounds in subdirectories
-powershell.exe -File ~/.claude/play-mp3.ps1 'sounds\notifications\mysound.mp3'
+powershell.exe -File ~/.claude/audio-hooks/play-mp3.ps1 'sounds\notifications\mysound.mp3'
 ```
 
 **Add more hooks for different events:**
@@ -179,7 +170,7 @@ powershell.exe -File ~/.claude/play-mp3.ps1 'sounds\notifications\mysound.mp3'
         "hooks": [
           {
             "type": "command",
-            "command": "powershell.exe -ExecutionPolicy Bypass -File ~/.claude/play-mp3.ps1 'sounds\\command-complete.mp3' 2>/dev/null || true"
+            "command": "powershell.exe -ExecutionPolicy Bypass -File ~/.claude/audio-hooks/play-mp3.ps1 'sounds\\command-complete.mp3' 2>/dev/null || true"
           }
         ]
       }
@@ -194,7 +185,7 @@ powershell.exe -File ~/.claude/play-mp3.ps1 'sounds\notifications\mysound.mp3'
 
 1. **Test PowerShell audio playback directly:**
    ```bash
-   powershell.exe -ExecutionPolicy Bypass -File ~/.claude/play-mp3.ps1 'sounds\requestSent.mp3'
+   powershell.exe -ExecutionPolicy Bypass -File ~/.claude/audio-hooks/play-mp3.ps1 'sounds\requestSent.mp3'
    ```
 
 2. **Verify file paths use Windows-style backslashes:**
@@ -205,7 +196,7 @@ powershell.exe -File ~/.claude/play-mp3.ps1 'sounds\notifications\mysound.mp3'
 
 3. **Check audio files exist:**
    ```bash
-   ls ~/.claude/sounds/
+   ls ~/.claude/audio-hooks/sounds/
    ```
 
 4. **Ensure Windows audio is working:**
